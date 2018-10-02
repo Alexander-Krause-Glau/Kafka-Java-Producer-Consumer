@@ -15,6 +15,8 @@ public class ConsumerExample {
   public static void main(String[] args) throws InterruptedException, UnsupportedEncodingException {
 
     // https://kafka.apache.org/20/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html
+    
+    // See ProducerExample class for further setup instructions
 
     Properties properties = new Properties();
     properties.put("bootstrap.servers", "localhost:9092");
@@ -32,13 +34,11 @@ public class ConsumerExample {
     runMainLoop(args, properties);
   }
 
-  static void runMainLoop(String[] args, Properties properties)
+  private static void runMainLoop(String[] args, Properties properties)
       throws InterruptedException, UnsupportedEncodingException {
 
-    // Create Kafka producer
-    KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties);
-
-    try {
+    // Create Kafka consumer
+    try (KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties)) {
 
       consumer.subscribe(Arrays.asList(properties.getProperty("kafka.topic")));
 
@@ -48,20 +48,17 @@ public class ConsumerExample {
         ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
 
         for (ConsumerRecord<String, String> record : records) {
-          System.out.printf("partition = %s, offset = %d, key = %s, value = %s\n",
+          System.out.printf("partition = %s, offset = %d, key = %s, value = %s, time = %d\n",
               record.partition(), record.offset(), record.key(),
-              decodeMsg(record.value()).getData());
+              decodeMsg(record.value()).getData(), System.currentTimeMillis());
         }
 
       }
     }
 
-    finally {
-      consumer.close();
-    }
   }
 
-  public static Message decodeMsg(String json) throws UnsupportedEncodingException {
+  private static Message decodeMsg(String json) throws UnsupportedEncodingException {
 
     Gson gson = new Gson();
 

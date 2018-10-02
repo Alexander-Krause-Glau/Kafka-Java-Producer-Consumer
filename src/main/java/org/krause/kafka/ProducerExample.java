@@ -11,8 +11,11 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class ProducerExample {
-  
+
   // Credit: https://gist.github.com/kleysonr/d76df87479cc884818ebe870d297d7e5
+  
+  // Start the Kafka and Zookeeper docker container with the included docker-compose file.
+  // Then, start run the ConsumerExample and ProducerExample.
 
   public static void main(String[] args) throws InterruptedException, UnsupportedEncodingException {
 
@@ -34,32 +37,29 @@ public class ProducerExample {
     runMainLoop(args, properties);
   }
 
-  static void runMainLoop(String[] args, Properties properties)
+  private static void runMainLoop(String[] args, Properties properties)
       throws InterruptedException, UnsupportedEncodingException {
 
     // Create Kafka producer
-    KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-
-    try {
+    try (KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties)) {
 
       while (true) {
 
         Thread.sleep(1000);
         String id = "device-" + getRandomNumberInRange(1, 5);
+
+        System.out.println("Send data with id: " + id + " at: " + System.currentTimeMillis());
+
         producer.send(new ProducerRecord<String, String>(properties.getProperty("kafka.topic"), id,
             getMsg(id)));
 
       }
 
-    } finally {
-
-      producer.close();
-
     }
 
   }
 
-  public static String getMsg(String id) throws UnsupportedEncodingException {
+  private static String getMsg(String id) throws UnsupportedEncodingException {
 
     Gson gson = new Gson();
 
