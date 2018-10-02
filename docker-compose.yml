@@ -14,3 +14,11 @@ services:
       # docker host IP
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  kafka-manager:
+    container_name: kafka-manager
+    image: sheepkiller/kafka-manager
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zookeeper:2181
+      APPLICATION_SECRET: mysecret
