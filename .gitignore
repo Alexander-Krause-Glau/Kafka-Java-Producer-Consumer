@@ -4,4 +4,5 @@
 .settings
 bin
 .DS_Store
-/build/
+/build/*
+!/build/generated-main-avro-java
