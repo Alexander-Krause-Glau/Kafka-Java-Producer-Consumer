@@ -1,4 +1,4 @@
-package org.krause.kafka;
+package org.krause.kafka.json;
 
 import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
@@ -9,13 +9,12 @@ import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.krause.kafka.Message;
 
 public class ConsumerExample {
 
   public static void main(String[] args) throws InterruptedException, UnsupportedEncodingException {
 
-    // https://kafka.apache.org/20/javadoc/index.html?org/apache/kafka/clients/consumer/KafkaConsumer.html
-    
     // See ProducerExample class for further setup instructions
 
     Properties properties = new Properties();

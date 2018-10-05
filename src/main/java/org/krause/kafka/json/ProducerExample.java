@@ -1,4 +1,4 @@
-package org.krause.kafka;
+package org.krause.kafka.json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -7,19 +7,17 @@ import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
 public class ProducerExample {
 
-  // Credit: https://gist.github.com/kleysonr/d76df87479cc884818ebe870d297d7e5
-  
-  // Start the Kafka and Zookeeper docker container with the included docker-compose file.
-  // Then, start run the ConsumerExample and ProducerExample.
+  // Start docker-compose.yml
 
   public static void main(String[] args) throws InterruptedException, UnsupportedEncodingException {
-
-    // https://kafka.apache.org/20/javadoc/index.html?org/apache/kafka/clients/producer/KafkaProducer.html
 
     Properties properties = new Properties();
     properties.put("bootstrap.servers", "localhost:9092");
@@ -40,7 +38,6 @@ public class ProducerExample {
   private static void runMainLoop(String[] args, Properties properties)
       throws InterruptedException, UnsupportedEncodingException {
 
-    // Create Kafka producer
     try (KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties)) {
 
       while (true) {
@@ -48,11 +45,19 @@ public class ProducerExample {
         Thread.sleep(1000);
         String id = "device-" + getRandomNumberInRange(1, 5);
 
-        System.out.println("Send data with id: " + id + " at: " + System.currentTimeMillis());
+        final Future<RecordMetadata> r =
+            producer.send(new ProducerRecord<String, String>(properties.getProperty("kafka.topic"),
+                id, getMsg(id)));
 
-        producer.send(new ProducerRecord<String, String>(properties.getProperty("kafka.topic"), id,
-            getMsg(id)));
+        RecordMetadata recordMetadata = null;
 
+        try {
+          recordMetadata = r.get();
+        } catch (ExecutionException e) {
+          e.printStackTrace();
+        }
+        System.out.printf("Send data with id: %s, metaData: %s at time = %d\n", id, recordMetadata,
+            System.currentTimeMillis());
       }
 
     }
