@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:0.15.1"
+    }
+}
+
+apply plugin: "com.commercehub.gradle.plugin.avro"
 apply plugin: 'java-library'
 
 repositories {
@@ -6,6 +16,8 @@ repositories {
     	url "http://packages.confluent.io/maven/"
     }
 }
+
+sourceSets.main.java.srcDirs = ['build/generated-main-avro-java','src/main/java']
 
 dependencies {
 	implementation group: 'org.apache.kafka', name: 'kafka_2.12', version: '2.0.0'	
