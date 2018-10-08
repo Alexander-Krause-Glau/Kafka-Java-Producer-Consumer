@@ -40,6 +40,7 @@ public class ConsumerAvroPojoExample {
 
     if (args.length == 1) {
       showPerformance = args[0].equals("performance");
+      System.out.println("Performance logging enabled...");
     }
 
     if (showPerformance) {
@@ -78,6 +79,7 @@ public class ConsumerAvroPojoExample {
         for (ConsumerRecord<String, Message> record : records) {
 
           if (showPerformance) {
+            record.value();
             counter.incrementAndGet();
           } else {
             System.out.printf("partition = %s, offset = %d, key = %s, value = %s, time = %d\n",

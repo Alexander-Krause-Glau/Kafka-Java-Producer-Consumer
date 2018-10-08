@@ -11,3 +11,4 @@ Java examples for Kafka producers and consumers. Included examples:
 2. Open producer / consumer pair
 3. In producer source file, see which docker-compose file you must use, start the containers now
 4. Wait 30 seconds and start both the producer and consumer (Right click file -> Run as -> Java Application)
+5. (Optional) Start with program argument `performance` to enable performance logging.
