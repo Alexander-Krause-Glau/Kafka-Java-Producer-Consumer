@@ -9,7 +9,8 @@ import org.krause.kafka.Message;
 
 public class MessageToByteSerializer implements Serializer<Message> {
 
-  private static final int BYTE_BUFFER_CAPACITY = 100;
+  private static final int BYTE_BUFFER_CAPACITY = 10000;
+  //private static final int BYTE_BUFFER_CAPACITY = 65536; 
   private static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 
   private final ByteBufferSerializer byteBufferSerializer = new ByteBufferSerializer();
@@ -21,7 +22,7 @@ public class MessageToByteSerializer implements Serializer<Message> {
 
   @Override
   public byte[] serialize(String topic, Message data) {
-    final ByteBuffer buffer = ByteBuffer.allocateDirect(BYTE_BUFFER_CAPACITY);
+    final ByteBuffer buffer = ByteBuffer.allocate(BYTE_BUFFER_CAPACITY);
 
     putStringIntoByteArray(data.getId(), buffer);
     putStringIntoByteArray(data.getTimestamp(), buffer);
