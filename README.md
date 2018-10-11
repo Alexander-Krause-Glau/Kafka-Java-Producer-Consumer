@@ -3,7 +3,8 @@ Java examples for Kafka producers and consumers. Included examples:
 
 - JSON exchange
 - GenericRecord exchange via Avro
-- TODO Specific Record via Avro
+- Specific record exchange via Avro
+- Byte array exchange
 
 ## How to run
 
