@@ -23,7 +23,9 @@ public class ProducerPojoBinaryExample {
   private static AtomicLong counter = new AtomicLong(0);
   private static boolean showPerformance = false;
 
-  // Start docker-compose-avro.yml
+  // Start docker-compose-confluent.yml
+  // OR docker-compose-custom.yml
+  // OR docker-compose-wurstmeister.yml
   // You have to change the KAFKA_ADVERTISED_LISTENERS IP
 
   public static void main(String[] args) throws InterruptedException, IOException {

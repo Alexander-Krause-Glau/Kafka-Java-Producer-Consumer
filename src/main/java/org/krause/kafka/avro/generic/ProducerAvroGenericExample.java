@@ -29,7 +29,8 @@ public class ProducerAvroGenericExample {
 
   private static GenericRecordBuilder recordBuilder;
 
-  // Start docker-compose-avro.yml
+  // Start docker-compose-confluent.yml
+  // OR docker-compose-custom.yml
   // You have to change the KAFKA_ADVERTISED_LISTENERS IP
 
   public static void main(String[] args) throws InterruptedException, IOException {
